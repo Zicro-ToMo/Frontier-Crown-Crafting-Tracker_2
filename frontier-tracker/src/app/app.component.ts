@@ -27,7 +27,7 @@ import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } f
               </svg>
             </div>
             <div>
-              <div class="brand-eyebrow">Frontier Crown · Tier 4</div>
+              <div class="brand-eyebrow">·Frontier Crown·</div>
               <h1>Crafting Tracker</h1>
             </div>
           </div>
@@ -37,7 +37,7 @@ import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } f
               <span>¿Confirmar?</span>
             } @else {
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-              <span>Reiniciar</span>
+              <span>Reboot</span>
             }
           </button>
         </div>
@@ -75,7 +75,7 @@ import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } f
 
         @if (progress().complete) {
           <div class="complete-banner">
-            <span>✦</span> Inventario suficiente para completar la corona <span>✦</span>
+            <span>✦</span> Sufficient inventory to complete the crown <span>✦</span>
           </div>
         }
       </header>
@@ -87,7 +87,7 @@ import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } f
           [class.active]="tab() === 'base'"
           [attr.aria-selected]="tab() === 'base'"
           (click)="tab.set('base')">
-          Materiales base
+          Base materials
           <span class="badge">{{ baseRows().length }}</span>
         </button>
         <button
@@ -95,7 +95,7 @@ import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } f
           [class.active]="tab() === 'intermediate'"
           [attr.aria-selected]="tab() === 'intermediate'"
           (click)="tab.set('intermediate')">
-          Intermedios crafteados
+          Crafted intermediates
           <span class="badge">{{ intermediateRows().length }}</span>
         </button>
         <button
@@ -103,14 +103,14 @@ import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } f
           [class.active]="tab() === 'recipes'"
           [attr.aria-selected]="tab() === 'recipes'"
           (click)="tab.set('recipes')">
-          Recetas
+          Recipes
         </button>
       </nav>
 
       @if (tab() === 'base') {
         <section class="materials">
           <p class="section-hint">
-            Registrá lo que dropees o farmees. La barra superior se actualiza en tiempo real.
+            Record what you drop or farm. The top bar updates in real time.
           </p>
           @for (row of baseRows(); track row.material.id) {
             <app-material-row
@@ -181,9 +181,9 @@ import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } f
       }
 
       <footer class="foot">
-        <span>Datos guardados localmente en tu navegador</span>
+        <span>Data stored locally in your browser</span>
         <span class="dot">·</span>
-        <span>Sin servidor · sin cuenta</span>
+        <span>No server · No account</span>
       </footer>
     </main>
   `,
