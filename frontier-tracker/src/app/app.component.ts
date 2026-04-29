@@ -15,16 +15,7 @@ import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } f
         <div class="hero-inner">
           <div class="brand">
             <div class="brand-mark">
-              <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M4 22 L8 10 L12 18 L16 6 L20 18 L24 10 L28 22 Z" fill="url(#crown-grad)"/>
-                <rect x="4" y="22" width="24" height="4" fill="url(#crown-grad)"/>
-                <defs>
-                  <linearGradient id="crown-grad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="#78d9b8"/>
-                    <stop offset="1" stop-color="#b8a8d4"/>
-                  </linearGradient>
-                </defs>
-              </svg>
+              <img src="assets/icons/icon_Frontier_Crown.png" alt="Frontier Crown" />
             </div>
             <div>
               <div class="brand-eyebrow">·Frontier Crown·</div>
@@ -208,10 +199,11 @@ import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } f
       width: 48px; height: 48px;
       background: var(--bg-elev-1);
       border-radius: 10px;
-      padding: 8px;
+      padding: 2px;
       box-shadow: 0 0 0 1px var(--line-soft), 0 8px 24px rgba(0,0,0,0.3);
+      overflow: hidden;
     }
-    .brand-mark svg { width: 100%; height: 100%; display: block; }
+    .brand-mark img { width: 100%; height: 100%; display: block; object-fit: contain; }
     .brand-eyebrow {
       font-family: var(--font-mono);
       font-size: 11px;
