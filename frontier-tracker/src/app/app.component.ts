@@ -32,9 +32,9 @@ import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } f
             </div>
           </div>
 
-          <button class="btn-reset" (click)="confirmReset()" type="button" title="Vaciar inventario">
+          <button class="btn-reset" (click)="confirmReset()" type="button" title="Clear inventory">
             @if (resetConfirm()) {
-              <span>¿Confirmar?</span>
+              <span>Confirm?</span>
             } @else {
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
               <span>Reboot</span>
@@ -125,7 +125,7 @@ import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } f
       @if (tab() === 'intermediate') {
         <section class="materials">
           <p class="section-hint">
-            Si ya crafteaste algunos intermedios, anotalos acá y los descontamos del cálculo.
+            If you've already crafted some intermediates, record them here and we'll subtract them from the calculation.
           </p>
           @for (row of intermediateRows(); track row.material.id) {
             <app-material-row
