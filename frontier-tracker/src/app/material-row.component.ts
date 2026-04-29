@@ -26,13 +26,13 @@ import { MaterialDef } from './recipes';
           @if (isComplete()) {
             <span class="check">✓</span>
           } @else {
-            <span class="missing">faltan {{ missing() }}</span>
+            <span class="missing">missing {{ missing() }}</span>
           }
         </div>
       </div>
 
       <div class="controls">
-        <button class="btn-step" type="button" (click)="dec()" aria-label="Quitar 1">−</button>
+        <button class="btn-step" type="button" (click)="dec()" aria-label="Remove 1">−</button>
         <input
           type="number"
           inputmode="numeric"
@@ -40,8 +40,8 @@ import { MaterialDef } from './recipes';
           [ngModel]="have()"
           (ngModelChange)="onInput($event)"
           (focus)="$any($event.target).select()"
-          aria-label="Cantidad" />
-        <button class="btn-step" type="button" (click)="inc()" aria-label="Sumar 1">+</button>
+          aria-label="Quantity" />
+        <button class="btn-step" type="button" (click)="inc()" aria-label="Add 1">+</button>
       </div>
     </div>
   `,
@@ -73,7 +73,8 @@ import { MaterialDef } from './recipes';
       justify-content: center;
       background: var(--bg-deep);
       border-radius: 8px;
-      padding: 6px;
+      padding: 2px;
+      overflow: hidden;
     }
 
     /* Family colors driven by data attribute */
@@ -172,7 +173,7 @@ import { MaterialDef } from './recipes';
 
     @media (max-width: 540px) {
       .row { grid-template-columns: 36px 1fr; gap: 10px; padding: 10px; }
-      .icon-wrap { width: 36px; height: 36px; padding: 4px; }
+      .icon-wrap { width: 36px; height: 36px; padding: 1px; }
       .controls { grid-column: 1 / -1; justify-self: end; }
       .name { font-size: 13px; }
     }
