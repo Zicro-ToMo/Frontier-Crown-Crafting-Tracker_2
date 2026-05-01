@@ -2,12 +2,13 @@ import { Component, ChangeDetectionStrategy, inject, computed, signal } from '@a
 import { InventoryService } from './inventory.service';
 import { MaterialRowComponent } from './material-row.component';
 import { IconComponent } from './icon.component';
+import { StatsComponent } from './stats.component';
 import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } from './recipes';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [MaterialRowComponent, IconComponent],
+  imports: [MaterialRowComponent, IconComponent, StatsComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <main class="page">
@@ -96,6 +97,13 @@ import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } f
           (click)="tab.set('recipes')">
           Recipes
         </button>
+        <button
+          role="tab"
+          [class.active]="tab() === 'stats'"
+          [attr.aria-selected]="tab() === 'stats'"
+          (click)="tab.set('stats')">
+          Stats
+        </button>
       </nav>
 
       @if (tab() === 'base') {
@@ -123,6 +131,7 @@ import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } f
               [material]="row.material"
               [have]="row.have"
               [need]="row.need"
+              [craftable]="row.craftable"
               (changed)="onChange(row.material.id, $event)" />
           }
         </section>
@@ -169,6 +178,10 @@ import { MATERIALS, MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS, GOAL } f
             </ul>
           </div>
         </section>
+      }
+
+      @if (tab() === 'stats') {
+        <app-stats />
       }
 
       <footer class="foot">
@@ -452,7 +465,7 @@ export class AppComponent {
   // Expose to template
   readonly GOAL = GOAL;
 
-  tab = signal<'base' | 'intermediate' | 'recipes'>('base');
+  tab = signal<'base' | 'intermediate' | 'recipes' | 'stats'>('base');
   resetConfirm = signal(false);
   private resetTimer: any;
 
@@ -473,10 +486,12 @@ export class AppComponent {
   intermediateRows = computed(() => {
     const inv = this.inventory.inv();
     const req = this.intermediateRequired();
+    const craftable = this.inventory.craftableFromBase();
     return INTERMEDIATE_MATERIALS.map((id: MaterialId) => ({
       material: MATERIALS[id],
       have: inv[id] ?? 0,
       need: req[id] ?? 0,
+      craftable: craftable[id] ?? 0,
     }));
   });
 

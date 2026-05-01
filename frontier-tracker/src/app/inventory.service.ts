@@ -1,8 +1,9 @@
-import { Injectable, signal, computed, effect } from '@angular/core';
+import { Injectable, signal, computed, effect, inject } from '@angular/core';
 import {
   MaterialId, BASE_MATERIALS, INTERMEDIATE_MATERIALS,
   RECIPE_BY_OUTPUT, GOAL, MATERIALS,
 } from './recipes';
+import { DropLogService } from './drop-log.service';
 
 const STORAGE_KEY = 'frontier-crown-tracker:v1';
 
@@ -16,6 +17,8 @@ function emptyInventory(): Inventory {
 
 @Injectable({ providedIn: 'root' })
 export class InventoryService {
+  private dropLog = inject(DropLogService);
+
   // Raw drops the user has registered
   private _inv = signal<Inventory>(this.load());
 
@@ -48,6 +51,33 @@ export class InventoryService {
       for (const i of blackStone.inputs) req[i.id] += i.qty * GOAL.black_frontier_stone;
     }
     return req;
+  });
+
+  /**
+   * For each intermediate, how many you could craft RIGHT NOW with the
+   * current BASE inventory alone (ignoring already-crafted intermediates).
+   * Bottleneck = min(have / qty) across the recipe inputs.
+   * Note: this is the per-recipe potential in isolation. If two recipes
+   * share an input (e.g. frontier_magic_stone is in disparate_rune AND in
+   * the frontier stones), you can't actually craft the sum of these
+   * numbers — they compete for the same pool. But for a "what can I make
+   * with what I have" indicator it's the right answer per item.
+   */
+  readonly craftableFromBase = computed<Partial<Record<MaterialId, number>>>(() => {
+    const inv = this._inv();
+    const out: Partial<Record<MaterialId, number>> = {};
+    for (const id of INTERMEDIATE_MATERIALS) {
+      const recipe = RECIPE_BY_OUTPUT[id];
+      if (!recipe) continue;
+      let n = Infinity;
+      for (const inp of recipe.inputs) {
+        const have = inv[inp.id] ?? 0;
+        const possible = Math.floor(have / inp.qty);
+        if (possible < n) n = possible;
+      }
+      out[id] = Number.isFinite(n) ? n : 0;
+    }
+    return out;
   });
 
   /**
@@ -191,10 +221,13 @@ export class InventoryService {
 
   setQty(id: MaterialId, qty: number) {
     const safe = Math.max(0, Math.floor(qty || 0));
+    const prev = this._inv()[id] ?? 0;
+    if (safe > prev) this.dropLog.record(id, safe - prev);
     this._inv.update((inv) => ({ ...inv, [id]: safe }));
   }
 
   add(id: MaterialId, delta: number) {
+    if (delta > 0) this.dropLog.record(id, delta);
     this._inv.update((inv) => ({ ...inv, [id]: Math.max(0, (inv[id] ?? 0) + delta) }));
   }
 

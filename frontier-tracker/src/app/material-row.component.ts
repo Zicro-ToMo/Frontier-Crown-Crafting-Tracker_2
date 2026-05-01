@@ -29,6 +29,11 @@ import { MaterialDef } from './recipes';
             <span class="missing">missing {{ missing() }}</span>
           }
         </div>
+        @if (craftable() !== null) {
+          <div class="craftable" [class.craftable-zero]="craftable() === 0">
+            Craftable now: <strong>{{ craftable() }}</strong>
+          </div>
+        }
       </div>
 
       <div class="controls">
@@ -129,6 +134,23 @@ import { MaterialDef } from './recipes';
     .check { color: var(--done); margin-left: auto; font-weight: 700; }
     .missing { margin-left: auto; color: var(--text-muted); font-size: 11px; }
 
+    .craftable {
+      margin-top: 6px;
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: var(--bg-deep);
+      color: var(--text-secondary);
+      border: 1px solid var(--line-soft);
+    }
+    .craftable strong { color: var(--text-primary); font-weight: 700; }
+    .craftable-zero { opacity: 0.55; }
+    .row[data-family="green"] .craftable strong { color: var(--green); }
+    .row[data-family="black"] .craftable strong { color: var(--black-mat); }
+    .row[data-family="rune"]  .craftable strong { color: var(--rune); }
+
     .controls {
       display: flex;
       align-items: center;
@@ -183,6 +205,9 @@ export class MaterialRowComponent {
   material = input.required<MaterialDef>();
   have = input.required<number>();
   need = input.required<number>();
+  /** Optional: how many of this material can be crafted *right now* from
+   *  base inventory. `null` (default) hides the badge. */
+  craftable = input<number | null>(null);
 
   changed = output<number>();
 
